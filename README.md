@@ -1,2 +1,16 @@
 # astar
-Defines a `path` method for efficiently finding the shortest path between two `node`'s on a weighted graph. A `node` contains a `vector` of `edge`'s. An `edge` is a `node*` `cost_type` `pair`. The `node*` represents a connected `node` and the `cost_type` value represents the cost of moving to that `node`. `cost_type` is a templated type. Either integer or floating-point types can be used for `cost_type`. `node`'s also have a `tentative` cost and a `heuristic` cost. By default, the `tentative` cost is set to `max` and the `heuristic cost` is set to `0`. To get the true cost of getting to one `node` from another, the `path` method can be used. The `path` method takes two `node`'s as references (`start` and `goal`) and returns the `cost` of the path. If the `cost` is `max` then a path does not exist. If a path was found, all of the `node`'s along the shortest path will have `tentative` values which are the true cost of reaching the `node`. To retrace a path, start at the `goal` node and follow the `node`'s with the lowest `tentative` values until you inevitably reach the `start` `node`.
+
+A c++ implementation of the A\* search algorithm using a priority queue and a templated weight-type. The algorithm finds the shortest path between two nodes on a weighted graph.
+
+A `node` uses a templated `cost_type` and contains a `vector` of `edge`s and two `cost_type` values: `tentative` and `heuristic`. An `edge` is a pair of `node*` and `cost_type`. The `path` method takes two `node&` and returns a `cost_type` of the sum of the weighs of all of the `edge`s along the shortest possible path between the two `node`s. If a path does not exist, `std::numeric_limits<cost_type>::max()` is returned. If a path was found, the `tentative` values of all of the `node`s along the path are equal to the sum of the weights of all the `edge`s along the shortest possible path from the `start` `node` to the `node`. This means you can retrace the shortest path by starting at the `goal` `node` and following the `node`s with the smallest `tentative` values until you reach the `start` node. *Minimal code example below.*
+```cpp
+#include <iostream>
+#include "astar.hpp"
+
+int main(){
+  astar::node<unsigned> n0, n1; // Two nodes.
+  n0.edges.emplace_back(&n1, 1u); // Add a path with a cost of 1 from n0 to n1.
+  std::cout << astar::path(n0, n1) << std::endl; // The shortest path from n0 to n1 should be 1.
+  std::cout << n0.tentative << ", " << n1.tentative << std::endl; // The tentative values should be 0, and 1.
+}
+```

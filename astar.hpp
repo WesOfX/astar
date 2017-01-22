@@ -25,7 +25,7 @@ namespace astar{
 	traced backwards from the goal by visiting the nodes with the lowest
 	tentative cost values */
 	template<typename cost_type>
-	bool path(node<cost_type>& start, decltype(start) goal){
+	cost_type path(node<cost_type>& start, decltype(start) goal){
 		auto priority = [](
 			const node<cost_type>* lhs,
 			const node<cost_type>* rhs
@@ -46,7 +46,7 @@ namespace astar{
 		open_set.push(&start);
 		while(!open_set.empty()){			
 			auto n = open_set.top();
-			if(n == &goal) return true;
+			if(n == &goal) return goal.tentative;
 			open_set.pop();
 			for(auto& i: n->edges){
 				if(i.first->tentative
@@ -62,6 +62,6 @@ namespace astar{
 		}
 		// if(goal.tentative != std::numeric_limits<cost_type>::max())
 			// return true;		
-		return false;
+		return std::numeric_limits<cost_type>::max();
 	}
 };
