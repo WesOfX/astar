@@ -4,9 +4,6 @@
 #include <limits>
 #include <queue>
 
-// TODO Remove
-#include <iostream>
-
 namespace astar{
 	template<typename cost_type>
 	struct node;
@@ -49,16 +46,22 @@ namespace astar{
 		open_set.push(&start);
 		while(!open_set.empty()){			
 			auto n = open_set.top();
+			if(n == &goal) return true;
 			open_set.pop();
 			for(auto& i: n->edges){
-				auto proposed = n->tentative + i.second;
-				if(i.first->tentative > proposed){
-					i.first->tentative = proposed;
+				if(i.first->tentative
+				== std::numeric_limits<cost_type>::max()
+				){
+					i.first->tentative = n->tentative + i.second;
 					open_set.push(i.first);
 				}
+				// else if(i.first->tentative >= n->tentative + i.second){
+
+				// }
 			}
 		}
-		if(goal.tentative != std::numeric_limits<cost_type>::max()) return true;		
+		// if(goal.tentative != std::numeric_limits<cost_type>::max())
+			// return true;		
 		return false;
 	}
 };
