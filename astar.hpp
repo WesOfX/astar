@@ -8,10 +8,10 @@ namespace astar{
 	template<typename cost_type>
 	struct node;
 	template<typename cost_type>
-	using edge_type = std::pair<node<cost_type>*, cost_type>;
+	using edge = std::pair<node<cost_type>*, cost_type>;
 	template<typename cost_type>
 	struct node{		
-		std::vector<edge_type<cost_type>> edges;
+		std::vector<edge<cost_type>> edges;
 		cost_type tentative, heuristic;
 		node(
 			decltype(edges) edges = {},
