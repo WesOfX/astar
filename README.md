@@ -9,9 +9,11 @@ A `node` uses a templated `cost_type` and contains a `vector` of `edge`s and two
 
 int main(){
   astar::node<unsigned> n0, n1, n2; // Three nodes.
-  n0.edges.emplace_back(&n1, 1u); // Add a path with a cost of 1 from n0 to n1
-  std::cout << astar::path(n0, n1) << std::endl; // The shortest path from n0 to n1 should be 1
+  n0.edges.emplace_back(&n1, 1u); // Add a path with a cost of 1 from n0 to n1.
+  std::cout << astar::path(n0, n1) << std::endl; // The shortest path from n0 to n1 should be 1.
   std::cout << astar::path(n0, n2) << std::endl; /* The shortest path from n0 to n2 should be
-                                                    std::numeric_limits<unsigned>::max */
+                                                    std::numeric_limits<unsigned>::max. */
+  // The tentative values should be 0, 1, std::numeric_limits<unsigned>::max.
+  std::cout << n0.tentative << ", " << n1.tentative << ", " << n2.tentative << std::endl;
 }
 ```
