@@ -20,10 +20,6 @@ namespace astar{
 			decltype(heuristic) heuristic = 0
 		): edges(edges), tentative(tentative), heuristic(heuristic){}
 	};
-	
-	/* Returns false if no path could be found. Otherwise, a path can be
-	traced backwards from the goal by visiting the nodes with the lowest
-	tentative cost values */
 	template<typename cost_type>
 	cost_type path(node<cost_type>& start, decltype(start) goal){
 		auto priority = [](
@@ -34,14 +30,12 @@ namespace astar{
 				 + lhs->heuristic
 				 > rhs->tentative
 				 + rhs->heuristic;
-		};
-		
+		};		
 		std::priority_queue<
 			node<cost_type>*,
 			std::vector<node<cost_type>*>,
 			decltype(priority)
-		> open_set(priority);
-		
+		> open_set(priority);		
 		start.tentative = 0;
 		open_set.push(&start);
 		while(!open_set.empty()){			
@@ -55,13 +49,8 @@ namespace astar{
 					i.first->tentative = n->tentative + i.second;
 					open_set.push(i.first);
 				}
-				// else if(i.first->tentative >= n->tentative + i.second){
-
-				// }
 			}
-		}
-		// if(goal.tentative != std::numeric_limits<cost_type>::max())
-			// return true;		
+		}	
 		return std::numeric_limits<cost_type>::max();
 	}
 };
